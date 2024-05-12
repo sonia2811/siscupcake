@@ -1,23 +1,57 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Route::prefix('admin')->namespace('Admin')->middleware('auth')
+        ->group(function(){
+    
+    /**
+     * Routes Products
+     */
+    Route::any('products/search', 'ProductController@search')->name('products.search');
+    Route::resource('products', 'ProductController'); 
+            
+    /**
+     * Routes Categories
+     */
+    Route::any('categories/search', 'CategoryController@search')->name('categories.search');
+    Route::resource('categories', 'CategoryController');       
+     
+    /**
+     * Routes Users
+     */
+    Route::any('users/search', 'UserController@search')->name('users.search');
+    Route::resource('users', 'UserController');
+            
+    /**
+     * Routes Permissions
+     */
+    Route::any('permissions/search', 'ACL\PermissionController@search')->name('permissions.search');
+    Route::resource('permissions', 'ACL\PermissionController');
+    
+    /**
+     * Routes Profiles
+     */
+    Route::any('profiles/search', 'ACL\ProfileController@search')->name('profiles.search');
+    Route::resource('profiles', 'ACL\ProfileController');
+    
+    /*
+     * Home Dashboard
+     */
+    Route::get('/', 'PlanController@index')->name('admin.index');
+    
+});
 
 /**
 * Site Routes
 */
 
-Route::get('/plan/{url}', 'Site\SiteController@plan')->name('plan.subscription');
+Route::get('admin/produtos', 'Admin\ProductController@index')->name('produtos.index');
 Route::get('/', 'Site\SiteController@index')->name('site.home');
 
 //Route::get('/', function () {
 //    return view('welcome');
 //});
+
+/**
+* Auth Routes
+*/
+Auth::routes();
