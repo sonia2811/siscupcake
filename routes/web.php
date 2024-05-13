@@ -4,6 +4,15 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
         ->group(function(){
     
     /**
+     * Routes Product x Category
+    */
+    Route::get('product/{id}/category/{idCategory}/detach', 'CategoryProductController@detachCategoryProduct')->name('product.category.detach');
+    Route::post('product/{id}/categories', 'CategoryProductController@attachCategoriesProduct')->name('product.categories.attach');
+    Route::any('product/{id}/categories/search', 'CategoryProductController@filterCategoriesAvailable')->name('product.categories.available.search');
+    Route::get('product/{id}/categories/create', 'CategoryProductController@categoriesAvailable')->name('product.categories.available');
+    Route::get('product/{id}/categories', 'CategoryProductController@categories')->name('product.categories');
+            
+    /**
      * Routes Products
      */
     Route::any('products/search', 'ProductController@search')->name('products.search');
@@ -44,12 +53,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
 * Site Routes
 */
 
-Route::get('admin/produtos', 'Admin\ProductController@index')->name('produtos.index');
 Route::get('/', 'Site\SiteController@index')->name('site.home');
-
-//Route::get('/', function () {
-//    return view('welcome');
-//});
 
 /**
 * Auth Routes

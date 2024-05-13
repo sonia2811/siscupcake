@@ -48,8 +48,6 @@ class CategoryController extends Controller
     {
         $data = $request->all();
         
-        $data['tenant_id'] = auth()->user()->tenant_id;
-        
         $this->repository->create($data);
             
         return redirect()->route('categories.index')

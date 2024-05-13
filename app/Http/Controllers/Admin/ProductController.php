@@ -48,10 +48,9 @@ class ProductController extends Controller
     public function store(StoreUpdateProductRequest $request)
     {
         $data = $request->all();
-        $tenant = auth()->user()->tenant;
         
         if ($request->hasFile('image') && $request->image->isValid()){
-            $data['image'] = $request->image->store("tenants\{$tenant->uuid}\products");
+            $data['image'] = $request->image->store("products");
         }
         
         $this->repository->create($data);
