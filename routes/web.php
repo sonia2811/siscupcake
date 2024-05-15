@@ -4,6 +4,12 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
         ->group(function(){
     
     /**
+     * Routes Formas Pagamento
+     */
+    Route::any('formaspagamento/search', 'FormaPagamentoController@search')->name('formaspagamento.search');
+    Route::resource('formaspagamento', 'FormaPagamentoController');         
+            
+    /**
      * Routes Product x Category
     */
     Route::get('product/{id}/category/{idCategory}/detach', 'CategoryProductController@detachCategoryProduct')->name('product.category.detach');

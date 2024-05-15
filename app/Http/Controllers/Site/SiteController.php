@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Plan;
+use App\Models\Product;
 
 class SiteController extends Controller
 {
     
     public function index()
     {
-//        $plans = Plan::with('details')->orderBy('price')->get();
+        $products = Product::orderBy('price')->get();
         
-//        return view('site.pages.home.index', compact('plans'));
-        return view('site.pages.home.index');
+        return view('site.pages.home.index', compact('products'));
     }
     
     public function plan($url)

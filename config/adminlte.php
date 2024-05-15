@@ -316,6 +316,11 @@ return [
             'url'  => 'admin/products',
             'icon' => 'fas fa-hamburger',
         ],
+        [
+            'text' => 'Formas Pagamento',
+            'url'  => 'admin/formaspagamento',
+            'icon' => 'fas fa-dollar-sign',
+        ],
     ],
 
     /*
