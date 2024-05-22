@@ -1,22 +1,22 @@
 @extends('adminlte::page')
 
-@section('title', 'Formas de Pagamento')
+@section('title', 'Formas de Envio')
 
 @section('content_header')
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Dashboard</a></li>
-        <li class="breadcrumb-item active"><a href="{{ route('formaspagamento.index') }}" class="active">Formas de Pagamento</a></li>
+        <li class="breadcrumb-item active"><a href="{{ route('formasenvio.index') }}" class="active">Formas de Envio</a></li>
     </ol>
 
-    <h1>Formas de Pagamento <a href="{{ route('formaspagamento.create') }}" class="btn btn-dark">ADD <i class="fas fa-plus-square"></i></a></h1>
+    <h1>Formas de Envio <a href="{{ route('formasenvio.create') }}" class="btn btn-dark">ADD <i class="fas fa-plus-square"></i></a></h1>
     
 @stop
 
 @section('content')
     <div class="card">
         <div class="card-header">
-            <form action="{{ route('formaspagamento.search') }}" method="POST" class="form form-inline">
+            <form action="{{ route('formasenvio.search') }}" method="POST" class="form form-inline">
                 @csrf
                 <input type="text" name="filter" placeholder="Filtrar:" class="form-control" value="{{ $filters['filter '] ?? '' }}">
                 <button type="submit" class="btn btn-dark">Filtrar <i class="fas fa-search"></i></button>
@@ -30,18 +30,18 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>Descrição</th>
+                        <th>Valor</th>
                         <th width="290">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($formasPagamento as $formaPagamento)
+                    @foreach($formasEnvio as $formaEnvio)
                         <tr>
-                            <td>{{ $formaPagamento->nome }}</td>
-                            <td>{{ $formaPagamento->descricao }}</td>
+                            <td>{{ $formaEnvio->nome }}</td>
+                            <td>{{ number_format($formaEnvio->valor, 2, ',', '.') }}</td>
                             <td style="width: 10px">
-                                <a href="{{ route('formaspagamento.edit', $formaPagamento->id) }}" class="btn btn-info">Editar</a>
-                                <a href="{{ route('formaspagamento.show', $formaPagamento->id) }}" class="btn btn-warning">VER</a>
+                                <a href="{{ route('formasenvio.edit', $formaEnvio->id) }}" class="btn btn-info">Editar</a>
+                                <a href="{{ route('formasenvio.show', $formaEnvio->id) }}" class="btn btn-warning">VER</a>
                             </td>
                         </tr>
                     @endforeach
@@ -51,9 +51,9 @@
         </div>
         <div class="card-footer">
             @if (isset($filters))
-                {!! $formasPagamento->appends($filters)->links() !!}
+                {!! $formasEnvio->appends($filters)->links() !!}
             @else
-                {!! $formasPagamento->links() !!}
+                {!! $formasEnvio->links() !!}
             @endif
         </div>
     </div>

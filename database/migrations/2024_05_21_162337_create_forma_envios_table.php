@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFormaPagamentosTable extends Migration
+class CreateFormaEnviosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateFormaPagamentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('forma_pagamentos', function (Blueprint $table) {
+        Schema::create('forma_envios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nome')->unique();
-            $table->text('descricao');
-            $table->enum('ativo', ['S', 'N'])->default('S');
+            $table->double('valor', 10, 2);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateFormaPagamentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('forma_pagamentos');
+        Schema::dropIfExists('forma_envios');
     }
 }

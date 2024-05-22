@@ -317,9 +317,14 @@ return [
             'icon' => 'fas fa-hamburger',
         ],
         [
-            'text' => 'Formas Pagamento',
+            'text' => 'Formas de Pagamento',
             'url'  => 'admin/formaspagamento',
             'icon' => 'fas fa-dollar-sign',
+        ],
+        [
+            'text' => 'Formas de Envio',
+            'url'  => 'admin/formasenvio',
+            'icon' => 'fas fa-paper-plane',
         ],
     ],
 

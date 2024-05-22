@@ -4,28 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FormaPagamento extends Model
+class FormaEnvio extends Model
 {
     protected $fillable = [
         'nome',
-        'descricao',
-        'ativo'
+        'valor',
     ];
     
     public function search($filter = null)
     {
         $results = $this->where('nome', 'LIKE', "%{$filter}%")
-                ->orWhere('descricao', 'LIKE', "%{$filter}%")
                 ->latest()
                 ->paginate();
         
         return $results;
-    }
-    
-    public function vendas()
-    {
-        
-        return $this->hasMany(Venda::class, 'forma_pagamento_id');
-        
     }
 }

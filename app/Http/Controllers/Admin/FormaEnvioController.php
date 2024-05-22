@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\StoreUpdateProductRequest;
-use App\Models\Product;
+use App\Http\Requests\StoreUpdateFormaEnvioRequest;
+use App\Models\FormaEnvio;
 
-class ProductController extends Controller
+class FormaEnvioController extends Controller
 {
     
     private $repository;
     
-    public function __construct(Product $product) {
-        $this->repository = $product;
+    public function __construct(FormaEnvio $formaEnvio) {
+        $this->repository = $formaEnvio;
     }
     
     /**
@@ -24,9 +23,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->repository->latest()->paginate();
+        $formasEnvio = $this->repository->latest()->paginate();
         
-        return view('admin.pages.products.index', compact('products'));
+        return view('admin.pages.formasenvio.index', compact('formasEnvio'));
     }
 
     /**
@@ -36,7 +35,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.products.create');
+        return view('admin.pages.formasenvio.create');
     }
 
     /**
@@ -45,17 +44,13 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUpdateProductRequest $request)
+    public function store(Request $request)
     {
         $data = $request->all();
         
-        if ($request->hasFile('foto') && $request->foto->isValid()){
-            $data['foto'] = $request->foto->store("products");
-        }
-        
         $this->repository->create($data);
             
-        return redirect()->route('products.index')
+        return redirect()->route('formasenvio.index')
                 ->with('message', 'Registro cadastrado com sucesso.');
     }
 
@@ -67,13 +62,13 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = $this->repository->find($id);
+        $formaEnvio = $this->repository->find($id);
         
-        if (!$product){
+        if (!$formaEnvio){
             return redirect()->back();
         }
         
-        return view('admin.pages.products.show', compact('product'));
+        return view('admin.pages.formasenvio.show', compact('formaEnvio'));
     }
 
     /**
@@ -84,13 +79,13 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = $this->repository->find($id);
+        $formaEnvio = $this->repository->find($id);
         
-        if (!$product){
+        if (!$formaEnvio){
             return redirect()->back();
         }
         
-        return view('admin.pages.products.edit', compact('product'));
+        return view('admin.pages.formasenvio.edit', compact('formaEnvio'));
     }
 
     /**
@@ -100,29 +95,19 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreUpdateProductRequest $request, $id)
+    public function update(StoreUpdateFormaEnvioRequest $request, $id)
     {
+        $formaEnvio = $this->repository->find($id);
         
-        $product = $this->repository->find($id);
-        
-        if (!$product){
+        if (!$formaEnvio){
             return redirect()->back();
         }
         
         $data = $request->all();
-        $tenant = auth()->user()->tenant;
         
-        if ($request->hasFile('foto') && $request->image->isValid()){
-            if (Storage::exists($product->foto)){
-                Storage::delete($product->foto);
-            }
-            
-            $data['image'] = $request->image->store("tenants\{$tenant->uuid}\products");
-        }
+        $formaEnvio->update($data);
         
-        $product->update($data);
-        
-        return redirect()->route('products.index')
+        return redirect()->route('formasenvio.index')
                 ->with('message', 'Registro atualizado com sucesso.');
     }
 
@@ -134,28 +119,24 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = $this->repository->find($id);
+        $formaEnvio = $this->repository->find($id);
         
-        if (!$product){
+        if (!$formaEnvio){
             return redirect()->back();
         }
         
-        if (Storage::exists($product->foto)){
-            Storage::delete($product->foto);
-        }
+        $formaEnvio->delete();
         
-        $product->delete();
-        
-        return redirect()->route('products.index')
+        return redirect()->route('formasenvio.index')
                 ->with('message', 'Registro excluído com sucesso.');
     }
     
     public function search(Request $request)
     {
         $filters = $request->except('_token');
-        $products = $this->repository->search($request->filter);
+        $formasEnvio = $this->repository->search($request->filter);
         
-        return view('admin.pages.products.index', compact('products', 'filters'));
+        return view('admin.pages.formasenvio.index', compact('formasEnvio', 'filters'));
         
     }
 }

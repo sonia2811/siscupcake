@@ -12,15 +12,15 @@
                 <div class="pricingTable">
                     <div class="pricing-content">
                         <div class="pricingTable-header">
-                            <h3 class="title">{{ $product->title }}</h3>
+                            <h3 class="title">{{ $product->nome }}</h3>
                         </div>
                         <div class="inner-content">
                             <div>
-                                <img src="{{ url("storage/{$product->image}") }}" alt="{{ $product->title }}"  style="max-width: 90px;" />
+                                <img src="{{ url("storage/{$product->foto}") }}" alt="{{ $product->nome }}"  style="max-width: 90px;" />
                             </div>
                             <div class="price-value">
                                 <span class="currency">R$</span>
-                                <span class="amount">{{ number_format($product->price, 2, ',', '.') }}</span>
+                                <span class="amount">{{ number_format($product->valor, 2, ',', '.') }}</span>
                             </div>
                         </div>
                     </div>

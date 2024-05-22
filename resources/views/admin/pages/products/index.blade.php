@@ -29,16 +29,18 @@
             <table class="table table-condensed">
                 <thead>
                     <tr>
-                        <th>Imagem</th>
-                        <th>Título</th>
+                        <th>Foto</th>
+                        <th>Nome</th>
+                        <th>Valor</th>
                         <th width="290">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($products as $product)
                         <tr>
-                            <td><img src="{{ url("storage/{$product->image}") }}" alt="{{ $product->title }}" style="max-width: 90px;"></td>
-                            <td>{{ $product->title }}</td>
+                            <td><img src="{{ url("storage/{$product->foto}") }}" alt="{{ $product->nome }}" style="max-width: 90px;"></td>
+                            <td>{{ $product->nome }}</td>
+                            <td>{{ number_format($product->valor, 2, ',', '.') }}</td>
                             <td style="width: 10px">
                                 <a href="{{ route('product.categories', $product->id) }}" class="btn btn-info" title="Categorias"><i class="fas fa-layer-group"></i></a>
                                 <a href="{{ route('products.edit', $product->id) }}" class="btn btn-info">Editar</a>

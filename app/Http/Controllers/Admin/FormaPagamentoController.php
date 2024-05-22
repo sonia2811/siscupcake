@@ -5,9 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateFormaPagamentoRequest;
+use App\Models\FormaPagamento;
 
 class FormaPagamentoController extends Controller
 {
+    
+    private $repository;
+    
+    public function __construct(FormaPagamento $formaPagamento) {
+        $this->repository = $formaPagamento;
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -77,7 +85,7 @@ class FormaPagamentoController extends Controller
             return redirect()->back();
         }
         
-        return view('admin.pages.formaspagamento.edit', compact('formaPagamnto'));
+        return view('admin.pages.formaspagamento.edit', compact('formaPagamento'));
     }
 
     /**

@@ -3,20 +3,12 @@
 @csrf
 
 <div class="form-group">
-    <label>* Título:</label>
-    <input type="text" name="title" class="form-control" placeholder="Título:" value="{{ $product->title ?? old('title') }}" >
-</div>
-<div class="form-group">
-    <label>* Preço:</label>
-    <input type="text" name="price" class="form-control" placeholder="Preço:" value="{{ $product->price ?? old('price') }}" >
-</div>
-<div class="form-group">
-    <label>* Imagem:</label>
-    <input type="file" name="image" class="form-control">
+    <label>* Nome:</label>
+    <input type="text" name="nome" class="form-control" placeholder="Nome:" value="{{ $formaPagamento->nome ?? old('nome') }}" >
 </div>
 <div class="form-group">
     <label>* Descrição:</label>
-    <textarea name="description" cols="30" rows="5" class="form-control" >{{ $product->description ?? old('description') }}</textarea>
+    <textarea name="descricao" cols="30" rows="5" class="form-control" >{{ $formaPagamento->descricao ?? old('descricao') }}</textarea>
 </div>
 <div class="form-group">
     <button type="submit" class="btn btn-dark">Enviar</button>

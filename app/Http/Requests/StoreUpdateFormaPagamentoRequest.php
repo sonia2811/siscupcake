@@ -26,7 +26,7 @@ class StoreUpdateFormaPagamentoRequest extends FormRequest
         $id = $this->segment(3);
         
         $rules = [
-            'nome' => ['required','min:3','max:255',"unique:products,title,{$id},id"],
+            'nome' => ['required','min:3','max:255',"unique:forma_pagamentos,title,{$id},id"],
             'descricao' => ['nullable','min:3','max:10000'],
         ];
         

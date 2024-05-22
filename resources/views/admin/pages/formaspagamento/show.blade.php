@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', "Detalhes do Produto { $product->name }")
+@section('title', "Detalhes da Forma de Pagamento { $formaPagamento->name }")
 
 @section('content_header')
-<h1>Detalhes do Produto <b>{{ $product->name }}</b></h1>
+<h1>Detalhes da Forma de Pagamento <b>{{ $formaPagamento->name }}</b></h1>
 @stop
 
 @section('content')
@@ -12,17 +12,15 @@
             
             @include('admin.includes.alerts')
             
-            <img src="{{ url("storage/{$product->image}") }}" alt="{{ $product->title }}" style="max-width: 150px;">
             <ul>
-                <li><strong>Título:</strong>{{ $product->title }}</li>
-                <li><strong>Flag:</strong>{{ $product->flag }}</li>
-                <li><strong>Descrição:</strong>{{ $product->description }}</li>
+                <li><strong>Nome:</strong>{{ $formaPagamento->nome }}</li>
+                <li><strong>Descrição:</strong>{{ $formaPagamento->descricao }}</li>
             </ul>
             
-            <form action="{{ route('products.destroy', $product->id) }}" class="form" method="POST">
+            <form action="{{ route('formaspagamento.destroy', $formaPagamento->id) }}" class="form" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> DELETAR O PRODUTO {{ $product->title }}</button>
+                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> DELETAR A FORMA DE PAGAMENTO {{ $formaPagamento->nome }}</button>
             </form>
             
         </div>

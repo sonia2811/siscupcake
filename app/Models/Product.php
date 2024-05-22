@@ -8,17 +8,17 @@ class Product extends Model
 {
     
     protected $fillable = [
-        'title',
-        'flag',
-        'price',
-        'description',
-        'image'
+        'nome',
+        'descricao',
+        'valor',
+        'ingredientes',
+        'foto'
     ];
     
     public function search($filter = null)
     {
-        $results = $this->where('name', 'LIKE', "%{$filter}%")
-                ->orWhere('description', 'LIKE', "%{$filter}%")
+        $results = $this->where('nome', 'LIKE', "%{$filter}%")
+                ->orWhere('descricao', 'LIKE', "%{$filter}%")
                 ->latest()
                 ->paginate();
         

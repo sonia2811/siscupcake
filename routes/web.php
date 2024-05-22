@@ -4,10 +4,16 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
         ->group(function(){
     
     /**
+     * Routes Formas Envio
+     */
+    Route::any('formasenvio/search', 'FormaEnvioController@search')->name('formasenvio.search');
+    Route::resource('formasenvio', 'FormaEnvioController');       
+    
+    /**
      * Routes Formas Pagamento
      */
     Route::any('formaspagamento/search', 'FormaPagamentoController@search')->name('formaspagamento.search');
-    Route::resource('formaspagamento', 'FormaPagamentoController');         
+    Route::resource('formaspagamento', 'FormaPagamentoController');       
             
     /**
      * Routes Product x Category

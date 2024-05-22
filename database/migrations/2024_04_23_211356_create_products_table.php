@@ -15,11 +15,15 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title')->unique();
-            $table->string('flag')->unique();
-            $table->text('image');
-            $table->double('price', 10, 2);
-            $table->text('description');
+            $table->text('foto');
+            $table->string('nome')->unique();
+            $table->string('descricao')->unique();
+            $table->double('valor', 10, 2);
+            $table->text('ingredientes');
+            $table->enum('ativo', ['S', 'N'])->default('S');
+            $table->enum('oferta', ['S', 'N'])->default('N');
+            $table->integer('quantidade')->default('0');
+            $table->integer('estoque_minimo')->default('0');
             $table->timestamps();
         });
         
