@@ -8,7 +8,34 @@
     <hr>
     <div class="row">
         @foreach($products as $product)
-            <div class="col-md-4 col-sm-6">
+        
+        
+        
+        
+        
+            <div class="col s12 m6 l4">
+                    <div class="card medium">
+                            <div class="card-image">
+                                <img src="{{ url("storage/{$product->foto}") }}" alt="{{ $product->nome }}"  style="max-width: 90px;" />
+                            </div>
+                            <div class="card-content">
+                                    <span class="card-title grey-text text-darken-4 truncate" title="{{ $product->nome }}">{{ $product->nome }}</span>
+                                    <p>R$ {{ number_format($product->valor, 2, ',', '.') }}</p>
+                            </div>
+                            <div class="card-action">
+                                    <a class="blue-text" href="#">Veja mais informações</a>
+                            </div>
+                    </div>
+            </div>
+        
+        
+        
+        
+        
+        
+        
+        
+<!--            <div class="col-md-4 col-sm-6">
                 <div class="pricingTable">
                     <div class="pricing-content">
                         <div class="pricingTable-header">
@@ -25,10 +52,10 @@
                         </div>
                     </div>
                     <div class="pricingTable-signup">
-                        <a href="#">Comprar</a>
+                        <a href="#">Adicionar no Carrinho</a>
                     </div>
                 </div>
-            </div>
+            </div>-->
         @endforeach
     </div>
 <!--    <div>

@@ -20,6 +20,7 @@ class CreateItemCarrinhoComprasTable extends Migration
             $table->integer('quantidade');
             $table->double('valor_unitario', 10, 2);
             $table->double('subtotal', 10, 2);
+            $table->unsignedBigInteger('cupom_desconto_id');
             $table->timestamps();
             
             $table->foreign('carrinho_compra_id')
@@ -30,6 +31,11 @@ class CreateItemCarrinhoComprasTable extends Migration
             $table->foreign('produto_id')
                     ->references('id')
                     ->on('products')
+                    ->onDelete('cascade');
+            
+            $table->foreign('cupom_desconto_id')
+                    ->references('id')
+                    ->on('cupom_descontos')
                     ->onDelete('cascade');
             
             

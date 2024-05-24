@@ -4,16 +4,22 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
         ->group(function(){
     
     /**
+     * Routes Cupom Desconto
+    */
+    Route::any('cuponsdesconto/search', 'CupomDescontoController@search')->name('cuponsdesconto.search');
+    Route::resource('cuponsdesconto', 'CupomDescontoController');
+    
+    /**
      * Routes Formas Envio
-     */
+    */
     Route::any('formasenvio/search', 'FormaEnvioController@search')->name('formasenvio.search');
-    Route::resource('formasenvio', 'FormaEnvioController');       
+    Route::resource('formasenvio', 'FormaEnvioController');
     
     /**
      * Routes Formas Pagamento
      */
     Route::any('formaspagamento/search', 'FormaPagamentoController@search')->name('formaspagamento.search');
-    Route::resource('formaspagamento', 'FormaPagamentoController');       
+    Route::resource('formaspagamento', 'FormaPagamentoController');
             
     /**
      * Routes Product x Category
@@ -62,12 +68,17 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
 });
 
 /**
-* Site Routes
+ * Site Routes
 */
 
 Route::get('/', 'Site\SiteController@index')->name('site.home');
 
 /**
-* Auth Routes
+ * Routes Carrinho Compras
+*/
+Route::resource('carrinhocompras', 'CarrinhoCompraController');
+
+/**
+ * Auth Routes
 */
 Auth::routes();
