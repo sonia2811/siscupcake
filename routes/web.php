@@ -63,7 +63,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
     /*
      * Home Dashboard
      */
-    Route::get('/', 'PlanController@index')->name('admin.index');
+    Route::get('/', 'DashboardController@index')->name('admin.index');
     
 });
 
