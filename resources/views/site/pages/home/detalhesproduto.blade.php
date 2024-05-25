@@ -21,6 +21,10 @@
         </div>
         <div class="section col s12 m6 l6">
             {!! $produto->descricao !!}
+            <hr>
+            <strong>Ingredientes:</strong>
+            <br>
+            {!! $produto->ingredientes !!}
         </div>
     </div>
 </div>
