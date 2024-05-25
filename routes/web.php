@@ -72,6 +72,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
 */
 
 Route::get('/', 'Site\SiteController@index')->name('site.home');
+Route::get('detalhesproduto/{produtoId}', 'Site\SiteController@visualizarDetalhesProduto')->name('site.detalhesproduto');
 
 /**
  * Routes Carrinho Compras

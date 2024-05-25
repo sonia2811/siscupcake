@@ -16,4 +16,19 @@ class SiteController extends Controller
         return view('site.pages.home.index', compact('products'));
     }
     
+    public function visualizarDetalhesProduto($produtoId)
+    {
+        if( !empty($produtoId) ) {
+            $produto = Product::where([
+                'id'    => $produtoId,
+                'ativo' => 'S'
+                ])->first();
+
+            if( !empty($produto) ) {
+                return view('site.pages.home.detalhesproduto', compact('produto'));
+            }
+        }
+        return redirect()->route('site.home');
+    }
+    
 }
