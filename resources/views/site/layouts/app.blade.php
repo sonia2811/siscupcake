@@ -20,8 +20,8 @@
                 <a href="{{ route('site.home') }}" class="brand-logo col offset-l1">Loja virtual - Siscupcake</a>
                 <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul class="right hide-on-med-and-down">
-                    <li><a href="#">Minhas compras</a></li>
-                    <li><a href="#">Carrinho</a></li>
+                    <li><a href="{{ route('carrinho.compras') }}">Minhas compras</a></li>
+                    <li><a href="{{ route('carrinho.index') }}">Carrinho</a></li>
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Entrar</a></li>
                         <li><a href="{{ url('/register') }}">Cadastre-se</a></li>

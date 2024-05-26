@@ -1,5 +1,37 @@
 <?php
 
+/**
+ * Auth Routes
+*/
+Auth::routes();
+
+/**
+ * Site Routes
+*/
+
+Route::get('/', 'Site\SiteController@index')->name('site.home');
+Route::get('detalhesproduto/{produtoId}', 'Site\SiteController@visualizarDetalhesProduto')->name('site.detalhesproduto');
+
+/**
+ * Routes Carrinho Compras
+*/
+Route::resource('carrinhocompras', 'CarrinhoCompraController');
+Route::get('/carrinho', 'Site\CarrinhoCompraController@index')->name('carrinho.index');
+Route::get('/carrinho/adicionar', function() {
+    return redirect()->route('index');
+});
+Route::post('/carrinho/adicionar', 'CarrinhoController@adicionar')->name('carrinho.adicionar');
+Route::delete('/carrinho/remover', 'CarrinhoController@remover')->name('carrinho.remover');
+Route::post('/carrinho/concluir', 'CarrinhoController@concluir')->name('carrinho.concluir');
+Route::post('/carrinho/cancelar', 'CarrinhoController@cancelar')->name('carrinho.cancelar');
+Route::post('/carrinho/desconto', 'CarrinhoController@desconto')->name('carrinho.desconto');
+
+/**
+ * Routes Vendas
+*/
+Route::get('/carrinho/compras', 'Site\VendaController@visualizarCompras')->name('carrinho.compras');
+
+
 Route::prefix('admin')->namespace('Admin')->middleware('auth')
         ->group(function(){
     
@@ -66,20 +98,3 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
     Route::get('/', 'DashboardController@index')->name('admin.index');
     
 });
-
-/**
- * Site Routes
-*/
-
-Route::get('/', 'Site\SiteController@index')->name('site.home');
-Route::get('detalhesproduto/{produtoId}', 'Site\SiteController@visualizarDetalhesProduto')->name('site.detalhesproduto');
-
-/**
- * Routes Carrinho Compras
-*/
-Route::resource('carrinhocompras', 'CarrinhoCompraController');
-
-/**
- * Auth Routes
-*/
-Auth::routes();

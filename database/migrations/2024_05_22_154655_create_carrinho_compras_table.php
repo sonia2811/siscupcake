@@ -16,6 +16,7 @@ class CreateCarrinhoComprasTable extends Migration
         Schema::create('carrinho_compras', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('venda_id')->nullable();
             $table->date('criado_em');
             $table->timestamps();
             
@@ -23,6 +24,10 @@ class CreateCarrinhoComprasTable extends Migration
                     ->references('id')
                     ->on('users')
                     ->onDelete('cascade');
+            
+            $table->foreign('venda_id')
+                    ->references('id')
+                    ->on('vendas');
         });
     }
 

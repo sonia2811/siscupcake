@@ -20,6 +20,8 @@ class CreateItemVendasTable extends Migration
             $table->integer('quantidade');
             $table->double('preco_compra', 10, 2);
             $table->double('subtotal', 10, 2);
+            $table->enum('pago', ['S', 'N']);
+            $table->enum('cancelado', ['S', 'N']);
             $table->timestamps();
             
             $table->foreign('venda_id')

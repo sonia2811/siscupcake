@@ -17,6 +17,7 @@ class CreateVendasTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('usuario_id');
             $table->unsignedBigInteger('forma_pagamento_id');
+            $table->enum('pago', ['S', 'N']);
             $table->double('valor', 10, 2);
             $table->date('data_venda');
             $table->timestamps();
