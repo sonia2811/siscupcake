@@ -18,9 +18,9 @@ class CreateItemCarrinhoComprasTable extends Migration
             $table->unsignedBigInteger('carrinho_compra_id');
             $table->unsignedBigInteger('produto_id');
             $table->integer('quantidade');
-            $table->double('valor_unitario', 10, 2);
+            $table->double('valor', 10, 2);
             $table->double('subtotal', 10, 2);
-            $table->unsignedBigInteger('cupom_desconto_id');
+            $table->unsignedBigInteger('cupom_desconto_id')->nullable();
             $table->timestamps();
             
             $table->foreign('carrinho_compra_id')

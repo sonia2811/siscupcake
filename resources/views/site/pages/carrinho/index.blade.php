@@ -39,7 +39,7 @@
 
                     <tr>
                         <td>
-                            <img width="100" height="100" src="{{ $itemCarrinhoCompra->produto->foto }}">
+                            <img width="100" height="100" src="{{ url("storage/{$itemCarrinhoCompra->produto->foto}") }}">
                         </td>
                         <td class="center-align">
                             <div class="center-align">
@@ -57,7 +57,7 @@
                         <td>R$ {{ number_format($itemCarrinhoCompra->produto->valor, 2, ',', '.') }}</td>
                         <td>R$ {{ number_format($itemCarrinhoCompra->descontos, 2, ',', '.') }}</td>
                         @php
-                            $total_produto = $itemCarrinhoCompra->valores - $itemCarrinhoCompra->descontos;
+                            $total_produto = $itemCarrinhoCompra->valor;
                             $total_pedido += $total_produto;
                         @endphp
                         <td>R$ {{ number_format($total_produto, 2, ',', '.') }}</td>
@@ -79,7 +79,7 @@
                 </form>
             </div>
             <div class="row">
-                <a class="btn-large tooltipped col l4 s4 m4 offset-l2 offset-s2 offset-m2" data-position="top" data-delay="50" data-tooltip="Voltar a página inicial para continuar comprando?" href="{{ route('index') }}">Continuar comprando</a>
+                <a class="btn-large tooltipped col l4 s4 m4 offset-l2 offset-s2 offset-m2" data-position="top" data-delay="50" data-tooltip="Voltar a página inicial para continuar comprando?" href="{{ route('site.home') }}">Continuar comprando</a>
                 <form method="POST" action="{{ route('carrinho.concluir') }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="pedido_id" value="{{ $carrinhoCompra->id }}">

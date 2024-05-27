@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\CarrinhoCompra;
+use App\Models\Product;
+use App\Models\ItemCarrinhoCompra;
+use Carbon\Carbon;
 
 class CarrinhoCompraController extends Controller
 {
@@ -37,9 +40,9 @@ class CarrinhoCompraController extends Controller
      */
     public function create()
     {
-        //
+        
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -50,40 +53,40 @@ class CarrinhoCompraController extends Controller
     {
         $this->middleware('VerifyCsrfToken');
 
-        $req = Request();
-        $idproduto = $req->input('id');
+//        $req = Request();
+        $idproduto = $request->input('id');
 
-        $produto = Produto::find($idproduto);
+        $produto = Product::find($idproduto);
+        
         if( empty($produto->id) ) {
-            $req->session()->flash('mensagem-falha', 'Produto não encontrado em nossa loja!');
+            $request->session()->flash('mensagem-falha', 'Produto não encontrado em nossa loja!');
             return redirect()->route('carrinho.index');
         }
 
         $idusuario = Auth::id();
 
-        $idpedido = Pedido::consultaId([
-            'usuario_id' => $idusuario,
-            'status'  => 'RE' // Reservada
-            ]);
+        $carrinhoCompra = CarrinhoCompra::where('usuario_id', $idusuario)
+                ->whereNotNull('venda_id')->first();
 
-        if( empty($idpedido) ) {
-            $pedido_novo = Pedido::create([
+        if( empty($carrinhoCompra) ) {
+            $carrinhoCompra = CarrinhoCompra::create([
                 'usuario_id' => $idusuario,
-                'status'  => 'RE'
-                ]);
-
-            $idpedido = $pedido_novo->id;
+                'criado_em' => Carbon::now(),
+            ]);
+            
+            $idCarrinhoCompra = $carrinhoCompra->id;
 
         }
 
-        PedidoProduto::create([
-            'pedido_id'  => $idpedido,
+        ItemCarrinhoCompra::create([
+            'carrinho_compra_id'  => $idCarrinhoCompra,
             'produto_id' => $idproduto,
+            'quantidade' => 1,
             'valor'      => $produto->valor,
-            'status'     => 'RE'
-            ]);
+            'subtotal' => $produto->valor * 1
+        ]);
 
-        $req->session()->flash('mensagem-sucesso', 'Produto adicionado ao carrinho com sucesso!');
+        $request->session()->flash('mensagem-sucesso', 'Produto adicionado ao carrinho com sucesso!');
 
         return redirect()->route('carrinho.index');
     }

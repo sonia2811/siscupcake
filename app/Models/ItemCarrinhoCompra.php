@@ -11,18 +11,19 @@ class ItemCarrinhoCompra extends Model
         'carrinho_compra_id',
         'produto_id',
         'quantidade',
-        'valor_unitario',
-        'subtotal'
+        'valor',
+        'subtotal',
+        'cupom_desconto_id'
     ];
     
     public function carrinhoCompra()
     {
-        return $this->belongsToMany(CarrinhoCompra::class);
+        return $this->belongsTo(CarrinhoCompra::class);
     }
     
     public function produto()
     {
-        return $this->belongsToMany(Produto::class);
+        return $this->belongsTo(Product::class);
     }
     
 }
