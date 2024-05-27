@@ -29,7 +29,8 @@ class CarrinhoCompraController extends Controller
     public function index()
     {
         $carrinhoCompras = CarrinhoCompra::where([
-            'usuario_id' => Auth::id()
+            'usuario_id' => Auth::id(),
+            'venda_id' => null
             ])->get();
 
         return view('site.pages.carrinho.index', compact('carrinhoCompras'));
