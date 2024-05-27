@@ -66,25 +66,34 @@ class CarrinhoCompraController extends Controller
         $idusuario = Auth::id();
 
         $carrinhoCompra = CarrinhoCompra::where('usuario_id', $idusuario)
-                ->whereNotNull('venda_id')->first();
+                ->whereNull('venda_id')->first();
 
         if( empty($carrinhoCompra) ) {
             $carrinhoCompra = CarrinhoCompra::create([
                 'usuario_id' => $idusuario,
                 'criado_em' => Carbon::now(),
-            ]);
-            
-            $idCarrinhoCompra = $carrinhoCompra->id;
-
+            ]);            
         }
-
-        ItemCarrinhoCompra::create([
-            'carrinho_compra_id'  => $idCarrinhoCompra,
-            'produto_id' => $idproduto,
-            'quantidade' => 1,
-            'valor'      => $produto->valor,
-            'subtotal' => $produto->valor * 1
-        ]);
+		
+        $idCarrinhoCompra = $carrinhoCompra->id;
+        
+        $itemCarrinhoCompra = ItemCarrinhoCompra::where('carrinho_compra_id', $idCarrinhoCompra)
+                ->where('produto_id', $idproduto)->first();
+        
+        if (empty($itemCarrinhoCompra)){
+            ItemCarrinhoCompra::create([
+                'carrinho_compra_id'  => $idCarrinhoCompra,
+                'produto_id' => $idproduto,
+                'quantidade' => 1,
+                'valor'      => $produto->valor,
+                'subtotal' => $produto->valor * 1
+            ]);
+        }else{
+            $itemCarrinhoCompra->quantidade += 1;
+            $itemCarrinhoCompra->subtotal = $itemCarrinhoCompra->quantidade * $itemCarrinhoCompra->valor;
+            $itemCarrinhoCompra->save();
+            
+        }
 
         $request->session()->flash('mensagem-sucesso', 'Produto adicionado ao carrinho com sucesso!');
 
@@ -131,54 +140,111 @@ class CarrinhoCompraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
+    {
+    }
+    
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function subtrair(Request $request)
     {
         $this->middleware('VerifyCsrfToken');
 
-        $req = Request();
-        $idpedido           = $req->input('pedido_id');
-        $idproduto          = $req->input('produto_id');
-        $remove_apenas_item = (boolean)$req->input('item');
+        $idCarrinhoCompra = $request->input('pedido_id');
+        $idproduto          = $request->input('produto_id');
         $idusuario          = Auth::id();
 
-        $idpedido = Pedido::consultaId([
-            'id'      => $idpedido,
-            'usuario_id' => $idusuario,
-            'status'  => 'RE' // Reservada
-            ]);
-
-        if( empty($idpedido) ) {
-            $req->session()->flash('mensagem-falha', 'Pedido não encontrado!');
+        $carrinhoCompra = CarrinhoCompra::where('usuario_id', $idusuario)
+            ->where('id', $idCarrinhoCompra)
+            ->whereNull('venda_id')->first();
+        
+        if( empty($carrinhoCompra) ) {
+            $request->session()->flash('mensagem-falha', 'Pedido não encontrado!');
             return redirect()->route('carrinho.index');
         }
 
         $where_produto = [
-            'pedido_id'  => $idpedido,
+            'carrinho_compra_id'  => $idCarrinhoCompra,
             'produto_id' => $idproduto
         ];
 
-        $produto = PedidoProduto::where($where_produto)->orderBy('id', 'desc')->first();
-        if( empty($produto->id) ) {
-            $req->session()->flash('mensagem-falha', 'Produto não encontrado no carrinho!');
+        $itemCarrinhoCompra = ItemCarrinhoCompra::where($where_produto)->orderBy('id', 'desc')->first();
+        
+        if( empty($itemCarrinhoCompra) ) {
+            $request->session()->flash('mensagem-falha', 'Produto não encontrado no carrinho!');
             return redirect()->route('carrinho.index');
         }
 
-        if( $remove_apenas_item ) {
-            $where_produto['id'] = $produto->id;
+        $itemCarrinhoCompra->quantidade -= 1;
+        
+        if ($itemCarrinhoCompra->quantidade <> 0){
+            $itemCarrinhoCompra->subtotal = $itemCarrinhoCompra->quantidade * $itemCarrinhoCompra->valor;
+            $itemCarrinhoCompra->save();
+        }else{
+            ItemCarrinhoCompra::where($where_produto)->delete();
         }
-        PedidoProduto::where($where_produto)->delete();
-
-        $check_pedido = PedidoProduto::where([
-            'pedido_id' => $produto->pedido_id
+        
+        $check_pedido = ItemCarrinhoCompra::where([
+            'carrinho_compra_id' => $itemCarrinhoCompra->carrinho_compra_id
             ])->exists();
 
         if( !$check_pedido ) {
-            Pedido::where([
-                'id' => $produto->pedido_id
+            CarrinhoCompra::where([
+                'id' => $itemCarrinhoCompra->carrinho_compra_id
                 ])->delete();
         }
 
-        $req->session()->flash('mensagem-sucesso', 'Produto removido do carrinho com sucesso!');
+        $request->session()->flash('mensagem-sucesso', 'Produto removido do carrinho com sucesso!');
+
+        return redirect()->route('carrinho.index');
+    }
+    
+    public function remover(Request $request)
+    {
+        $this->middleware('VerifyCsrfToken');
+
+        $idCarrinhoCompra = $request->input('pedido_id');
+        $idproduto          = $request->input('produto_id');
+        $idusuario          = Auth::id();
+
+        $carrinhoCompra = CarrinhoCompra::where('usuario_id', $idusuario)
+            ->where('id', $idCarrinhoCompra)
+            ->whereNull('venda_id')->first();
+        
+        if( empty($carrinhoCompra) ) {
+            $request->session()->flash('mensagem-falha', 'Pedido não encontrado!');
+            return redirect()->route('carrinho.index');
+        }
+
+        $where_produto = [
+            'carrinho_compra_id'  => $idCarrinhoCompra,
+            'produto_id' => $idproduto
+        ];
+
+        $itemCarrinhoCompra = ItemCarrinhoCompra::where($where_produto)->orderBy('id', 'desc')->first();
+        
+        if( empty($itemCarrinhoCompra) ) {
+            $request->session()->flash('mensagem-falha', 'Produto não encontrado no carrinho!');
+            return redirect()->route('carrinho.index');
+        }
+
+        ItemCarrinhoCompra::where($where_produto)->delete();
+        
+        $check_pedido = ItemCarrinhoCompra::where([
+            'carrinho_compra_id' => $itemCarrinhoCompra->carrinho_compra_id
+            ])->exists();
+
+        if( !$check_pedido ) {
+            CarrinhoCompra::where([
+                'id' => $itemCarrinhoCompra->carrinho_compra_id
+                ])->delete();
+        }
+
+        $request->session()->flash('mensagem-sucesso', 'Produto removido do carrinho com sucesso!');
 
         return redirect()->route('carrinho.index');
     }

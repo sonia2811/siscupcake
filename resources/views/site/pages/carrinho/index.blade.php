@@ -43,10 +43,10 @@
                         </td>
                         <td class="center-align">
                             <div class="center-align">
-                                <a class="col l4 m4 s4" href="#" onclick="carrinhoRemoverProduto({{ $carrinhoCompra->id }}, {{ $itemCarrinhoCompra->produto_id }}, 1 )">
+                                <a class="col l4 m4 s4" href="#" onclick="carrinhoSubtrairProduto({{ $carrinhoCompra->id }}, {{ $itemCarrinhoCompra->produto_id }}, 1 )">
                                     <i class="material-icons small">remove_circle_outline</i>
                                 </a>
-                                <span class="col l4 m4 s4"> {{ $itemCarrinhoCompra->qtd }} </span>
+                                <span class="col l4 m4 s4"> {{ $itemCarrinhoCompra->quantidade }} </span>
                                 <a class="col l4 m4 s4" href="#" onclick="carrinhoAdicionarProduto({{ $itemCarrinhoCompra->produto_id }})">
                                     <i class="material-icons small">add_circle_outline</i>
                                 </a>
@@ -57,7 +57,7 @@
                         <td>R$ {{ number_format($itemCarrinhoCompra->produto->valor, 2, ',', '.') }}</td>
                         <td>R$ {{ number_format($itemCarrinhoCompra->descontos, 2, ',', '.') }}</td>
                         @php
-                            $total_produto = $itemCarrinhoCompra->valor;
+                            $total_produto = $itemCarrinhoCompra->valor * $itemCarrinhoCompra->quantidade;
                             $total_pedido += $total_produto;
                         @endphp
                         <td>R$ {{ number_format($total_produto, 2, ',', '.') }}</td>
@@ -101,6 +101,15 @@
     <input type="hidden" name="produto_id">
     <input type="hidden" name="item">
 </form>
+
+<form id="form-subtrair-produto" method="POST" action="{{ route('carrinho.subtrair') }}">
+    {{ csrf_field() }}
+    {{ method_field('DELETE') }}
+    <input type="hidden" name="pedido_id">
+    <input type="hidden" name="produto_id">
+    <input type="hidden" name="item">
+</form>
+
 <form id="form-adicionar-produto" method="POST" action="{{ route('carrinho.adicionar') }}">
     {{ csrf_field() }}
     <input type="hidden" name="id">
