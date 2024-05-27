@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\CarrinhoCompra;
 use App\Models\Product;
 use App\Models\ItemCarrinhoCompra;
+use App\Models\FormaPagamento;
+use App\Models\FormaEnvio;
 use Carbon\Carbon;
 
 class CarrinhoCompraController extends Controller
@@ -72,7 +74,7 @@ class CarrinhoCompraController extends Controller
             $carrinhoCompra = CarrinhoCompra::create([
                 'usuario_id' => $idusuario,
                 'criado_em' => Carbon::now(),
-            ]);            
+            ]);
         }
 		
         $idCarrinhoCompra = $carrinhoCompra->id;
@@ -249,4 +251,15 @@ class CarrinhoCompraController extends Controller
         return redirect()->route('carrinho.index');
     }
     
+    public function visualizarResumo()
+    {
+        $formasPagamento = FormaPagamento::all();
+        $formasEnvio = FormaEnvio::all();
+        
+        $carrinhoCompras = CarrinhoCompra::where([
+            'usuario_id' => Auth::id()
+            ])->get();
+
+        return view('site.pages.carrinho.resumocompra', compact('carrinhoCompras', 'formasPagamento', 'formasEnvio'));
+    }
 }

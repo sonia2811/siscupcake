@@ -10,8 +10,10 @@ class Venda extends Model
     protected $fillable = [
         'usuario_id',
         'forma_pagamento_id',
+        'forma_envio_id',
         'valor',
-        'data_venda'
+        'pago',
+        'cancelado'
     ];
     
     public function itensVenda()
@@ -22,5 +24,10 @@ class Venda extends Model
     public function formaPagamento()
     {
         return $this->belongsTo(FormaPagamento::class);
+    }
+    
+    public function formaEnvio()
+    {
+        return $this->belongsTo(FormaEnvio::class);
     }
 }

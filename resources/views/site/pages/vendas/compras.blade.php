@@ -24,8 +24,9 @@
                     <table>
                         <thead>
                             <tr>
-                                <th colspan="2"></th>
+                                <th></th>
                                 <th>Produto</th>
+                                <th>Quantidade</th>
                                 <th>Valor</th>
                                 <th>Desconto</th>
                                 <th>Total</th>
@@ -35,27 +36,18 @@
                         @php
                             $total_pedido = 0;
                         @endphp
-                        @foreach ($pedido->pedido_produtos_itens as $pedido_produto)
+                        @foreach ($pedido->itensVenda as $pedido_produto)
                             @php
-                                $total_produto = $pedido_produto->valor - $pedido_produto->desconto;
+                                $total_produto = ($pedido_produto->preco_compra - $pedido_produto->desconto) * $pedido_produto->quantidade;
                                 $total_pedido += $total_produto;
                             @endphp
                             <tr>
-                                <td class="center">
-                                    @if($pedido_produto->status == 'PA')
-                                        <p class="center">
-                                            <input type="checkbox" id="item-{{ $pedido_produto->id }}" name="id[]" value="{{ $pedido_produto->id }}" />
-                                            <label for="item-{{ $pedido_produto->id }}">Selecionar</label>
-                                        </p>
-                                    @else
-                                        <strong class="red-text">CANCELADO</strong>
-                                    @endif
-                                </td>
                                 <td>
-                                    <img width="100" height="100" src="{{ $pedido_produto->produto->imagem }}">
+                                    <img width="100" height="100" src="{{ url("storage/{$pedido_produto->produto->foto}") }}">
                                 </td>
                                 <td>{{ $pedido_produto->produto->nome }}</td>
-                                <td>R$ {{ number_format($pedido_produto->valor, 2, ',', '.') }}</td>
+                                <td>{{ $pedido_produto->quantidade }}</td>
+                                <td>R$ {{ number_format($pedido_produto->preco_compra, 2, ',', '.') }}</td>
                                 <td>R$ {{ number_format($pedido_produto->desconto, 2, ',', '.') }}</td>
                                 <td>R$ {{ number_format($total_produto, 2, ',', '.') }}</td>
                             </tr>
@@ -90,7 +82,7 @@
         </div>
         <div class="row col s12 m12 l12">
             <div class="divider"></div>
-            <h4>Compras canceladas</h4>
+            <h4>Compras Canceladas</h4>
             @forelse ($cancelados as $pedido)
                 <h5 class="col l2 s12 m2"> Pedido: {{ $pedido->id }} </h5>
                 <h5 class="col l5 s12 m5"> Criado em: {{ $pedido->created_at->format('d/m/Y H:i') }} </h5>
@@ -109,19 +101,18 @@
                         @php
                             $total_pedido = 0;
                         @endphp
-                        @foreach ($pedido->pedido_produtos_itens as $pedido_produto)
+                        @foreach ($pedido->itensVenda as $pedido_produto)
                             @php
                                 $total_produto = $pedido_produto->valor - $pedido_produto->desconto;
                                 $total_pedido += $total_produto;
                             @endphp
                         <tr>
                             <td>
-                                <img width="100" height="100" src="{{ $pedido_produto->produto->imagem }}">
+                                <img width="100" height="100" src="{{ url("storage/{$pedido_produto->produto->foto}") }}">
                             </td>
                             <td>{{ $pedido_produto->produto->nome }}</td>
                             <td>R$ {{ number_format($pedido_produto->valor, 2, ',', '.') }}</td>
                             <td>R$ {{ number_format($pedido_produto->desconto, 2, ',', '.') }}</td>
-                            
                             <td>R$ {{ number_format($total_produto, 2, ',', '.') }}</td>
                         </tr>
                         @endforeach

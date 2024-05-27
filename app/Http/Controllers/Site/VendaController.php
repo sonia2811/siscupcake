@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Venda;
+use App\Models\CarrinhoCompra;
+use Carbon\Carbon;
 
 class VendaController extends Controller
 {
@@ -103,5 +105,57 @@ class VendaController extends Controller
             ])->orderBy('updated_at', 'desc')->get();
 
         return view('site.pages.vendas.compras', compact('compras', 'cancelados'));
+    }
+    
+    public function concluir(Request $request)
+    {
+        $this->middleware('VerifyCsrfToken');
+
+//        $req = Request();
+        $idCarrinhoCompra = $request->input('pedido_id');
+        $idusuario = Auth::id();
+
+        $carrinhoCompra = CarrinhoCompra::where([
+            'id'      => $idCarrinhoCompra,
+            'usuario_id' => $idusuario,
+            'venda_id' => null
+            ])->first();
+
+        if( empty($carrinhoCompra) ) {
+            $request->session()->flash('mensagem-falha', 'Pedido não encontrado!');
+            return redirect()->route('carrinho.index');
+        }
+
+        $itensCarrinhoCompra = $carrinhoCompra->itensCarrinhoCompra;
+        
+        if($itensCarrinhoCompra->count() == 0) {
+            $request->session()->flash('mensagem-falha', 'Produtos do pedido não encontrados!');
+            return redirect()->route('carrinho.index');
+        }
+
+        $venda = Venda::create([
+                'usuario_id' => $idusuario,
+                'forma_pagamento_id' => $request->input('formapagamento'),
+                'forma_envio_id' => $request->input('formaenvio'),
+                'data_venda' => Carbon::now(),
+            ]);
+        
+        foreach($itensCarrinhoCompra as $itemCarrinhoCompra){
+            
+            $venda->itensVenda()->create([
+                'produto_id' => $itemCarrinhoCompra->produto_id,
+                'quantidade' => $itemCarrinhoCompra->quantidade,
+                'preco_compra' => $itemCarrinhoCompra->valor,
+                'subtotal' => $itemCarrinhoCompra->subtotal,
+            ]);
+            
+        }
+        
+        $carrinhoCompra->venda_id = $venda->id;
+        $carrinhoCompra->save();
+        
+        $request->session()->flash('mensagem-sucesso', 'Compra concluída com sucesso!');
+
+        return redirect()->route('carrinho.compras');
     }
 }

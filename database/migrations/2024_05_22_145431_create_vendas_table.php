@@ -17,9 +17,9 @@ class CreateVendasTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('usuario_id');
             $table->unsignedBigInteger('forma_pagamento_id');
-            $table->enum('pago', ['S', 'N']);
-            $table->double('valor', 10, 2);
-            $table->date('data_venda');
+            $table->unsignedBigInteger('forma_envio_id');
+            $table->enum('pago', ['S', 'N'])->default('S');
+            $table->enum('cancelado', ['S', 'N'])->default('N');
             $table->timestamps();
             
             $table->foreign('usuario_id')
@@ -30,6 +30,11 @@ class CreateVendasTable extends Migration
             $table->foreign('forma_pagamento_id')
                     ->references('id')
                     ->on('forma_pagamentos')
+                    ->onDelete('cascade');
+            
+            $table->foreign('forma_envio_id')
+                    ->references('id')
+                    ->on('forma_envios')
                     ->onDelete('cascade');
         });
     }

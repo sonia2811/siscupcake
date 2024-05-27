@@ -32,9 +32,14 @@ Route::post('/carrinho/desconto', 'CarrinhoController@desconto')->name('carrinho
 Route::get('/carrinho/compras', 'Site\VendaController@visualizarCompras')->name('carrinho.compras');
 
 Route::prefix('carrinho')->middleware('auth')->group(function(){
+    Route::post('visualizaresumo', 'Site\CarrinhoCompraController@visualizarResumo')->name('carrinho.visualizarresumo');
     Route::post('adicionar', 'Site\CarrinhoCompraController@store')->name('carrinho.adicionar');
     Route::delete('subtrair', 'Site\CarrinhoCompraController@subtrair')->name('carrinho.subtrair');
     Route::delete('remover', 'Site\CarrinhoCompraController@remover')->name('carrinho.remover');
+});
+
+Route::prefix('venda')->middleware('auth')->group(function(){
+    Route::post('concluir', 'Site\VendaController@concluir')->name('venda.concluir');
 });
 
 Route::prefix('admin')->namespace('Admin')->middleware('auth')

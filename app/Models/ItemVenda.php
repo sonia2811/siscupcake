@@ -18,12 +18,12 @@ class ItemVenda extends Model
 
     public function venda()
     {
-        return $this->belongsToMany(Venda::class);
+        return $this->belongsTo(Venda::class);
     }
     
     public function produto()
     {
-        return $this->belongsToMany(Produto::class);
+        return $this->belongsTo(Product::class);
     }
     
 }
