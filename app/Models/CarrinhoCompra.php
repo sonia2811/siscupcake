@@ -9,6 +9,7 @@ class CarrinhoCompra extends Model
     
     protected $fillable = [
         'usuario_id',
+        'venda_id',
         'criado_em'
     ];
     

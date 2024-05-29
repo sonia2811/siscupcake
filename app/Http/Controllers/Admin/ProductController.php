@@ -47,6 +47,7 @@ class ProductController extends Controller
      */
     public function store(StoreUpdateProductRequest $request)
     {
+        dd('vem aqui');
         $data = $request->all();
         
         if ($request->hasFile('foto') && $request->foto->isValid()){

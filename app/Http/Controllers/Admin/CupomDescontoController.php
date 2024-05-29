@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUpdateCupomDescontoRequest;
-use App\CupomDesconto;
+use App\Models\CupomDesconto;
 
 class CupomDescontoController extends Controller
 {

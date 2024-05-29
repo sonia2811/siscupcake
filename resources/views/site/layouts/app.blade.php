@@ -22,10 +22,10 @@
                 <ul class="right hide-on-med-and-down">
                     <li><a href="{{ route('carrinho.compras') }}">Minhas compras</a></li>
                     <li><a href="{{ route('carrinho.index') }}">Carrinho</a></li>
-                    @if (Auth::guest())
+<!--                    @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Entrar</a></li>
                         <li><a href="{{ url('/register') }}">Cadastre-se</a></li>
-                    @else
+                    @else-->
                         <li>
                             <a class="dropdown-button" href="#!" data-activates="dropdown-user">
                                 Olá {{ Auth::user()->name }}!<i class="material-icons right">arrow_drop_down</i>
@@ -41,7 +41,7 @@
                                 </li>
                             </ul>
                         </li>
-                    @endif
+                    <!--@endif-->
                 </ul>
             </div>
         </nav>

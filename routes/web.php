@@ -15,7 +15,7 @@ Route::get('detalhesproduto/{produtoId}', 'Site\SiteController@visualizarDetalhe
 /**
  * Routes Carrinho Compras
 */
-Route::resource('carrinhocompras', 'CarrinhoCompraController');
+//Route::resource('carrinhocompras', 'CarrinhoCompraController');
 Route::get('/carrinho', 'Site\CarrinhoCompraController@index')->name('carrinho.index');
 //Route::get('/carrinho/adicionar', function() {
 //    return redirect()->route('index');

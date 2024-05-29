@@ -211,8 +211,8 @@ class CarrinhoCompraController extends Controller
         $this->middleware('VerifyCsrfToken');
 
         $idCarrinhoCompra = $request->input('pedido_id');
-        $idproduto          = $request->input('produto_id');
-        $idusuario          = Auth::id();
+        $idproduto = $request->input('produto_id');
+        $idusuario = Auth::id();
 
         $carrinhoCompra = CarrinhoCompra::where('usuario_id', $idusuario)
             ->where('id', $idCarrinhoCompra)
