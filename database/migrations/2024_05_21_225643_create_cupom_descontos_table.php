@@ -15,7 +15,7 @@ class CreateCupomDescontosTable extends Migration
     {
         Schema::create('cupom_descontos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nome');
+            $table->string('nome')->unique();
             $table->string('localizador')->unique();
             $table->decimal('desconto', 6, 2)->default(0);
             $table->enum('modo_desconto', ['valor', 'porc'])->default('porc');
