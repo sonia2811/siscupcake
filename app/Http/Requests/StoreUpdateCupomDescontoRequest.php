@@ -26,8 +26,7 @@ class StoreUpdateCupomDescontoRequest extends FormRequest
         $id = $this->segment(3);
         
         return [
-            'name' => "required|min:3|max:255|unique:categories,name,{$id},id",
-            'description' => 'nullable|min:3|max:10000',
+            'nome' => "required|min:3|max:255|unique:cupom_descontos,nome,{$id},id",
         ];
     }
 }

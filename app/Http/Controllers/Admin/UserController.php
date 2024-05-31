@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         
-        $users = $this->repository->latest()->tenantUser()->paginate();
+        $users = $this->repository->latest()->paginate();
         
         return view('admin.pages.users.index', compact('users'));
         
@@ -34,7 +34,6 @@ class UserController extends Controller
     {
         $data = $request->all();
         
-        $data['tenant_id'] = auth()->user()->tenant_id;
         $data['password'] = bcrypt($data['password']);
         
         $this->repository->create($data);
@@ -45,7 +44,7 @@ class UserController extends Controller
     
     public function show($id)
     {
-        $user = $this->repository->tenantUser()->find($id);
+        $user = $this->repository->find($id);
         
         if (!$user){
             return redirect()->back();
@@ -56,7 +55,7 @@ class UserController extends Controller
     
     public function destroy($id)
     {
-        $user = $this->repository->tenantUser()->find($id);
+        $user = $this->repository->find($id);
         
         if (!$user){
             return redirect()->back();
@@ -79,7 +78,7 @@ class UserController extends Controller
     
     public function edit($id)
     {
-        $user = $this->repository->tenantUser()->find($id);
+        $user = $this->repository->find($id);
         
         if (!$user){
             return redirect()->back();
@@ -90,7 +89,7 @@ class UserController extends Controller
     
     public function update(StoreUpdateUserRequest $request, $id)
     {
-        $user = $this->repository->tenantUser()->find($id);
+        $user = $this->repository->find($id);
         
         if (!$user){
             return redirect()->back();

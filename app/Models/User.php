@@ -62,7 +62,6 @@ class User extends Authenticatable
     {
         $results = $this->where('name', 'LIKE', "%{$filter}%")
                 ->orWhere('email', 'LIKE', "%{$filter}%")
-                ->tenantUser()
                 ->paginate();
         
         return $results;

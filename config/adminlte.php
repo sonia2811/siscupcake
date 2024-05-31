@@ -331,6 +331,11 @@ return [
             'url'  => 'admin/formasenvio',
             'icon' => 'fas fa-paper-plane',
         ],
+        [
+            'text' => 'Cupom de Desconto',
+            'url'  => 'admin/cuponsdesconto',
+            'icon' => 'fas fa-tag',
+        ],
     ],
 
     /*

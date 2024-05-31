@@ -47,7 +47,6 @@ class CupomDescontoController extends Controller
     public function store(StoreUpdateCupomDescontoRequest $request)
     {
         $data = $request->all();
-        
         $this->repository->create($data);
             
         return redirect()->route('cuponsdesconto.index')
@@ -105,7 +104,7 @@ class CupomDescontoController extends Controller
         
         $cupomDesconto->update($request->all());
         
-        return redirect()->route('cupoonsdesconto.index')
+        return redirect()->route('cuponsdesconto.index')
                 ->with('message', 'Registro atualizado com sucesso.');
     }
 

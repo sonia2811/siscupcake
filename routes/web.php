@@ -71,6 +71,7 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
     Route::any('product/{id}/categories/search', 'CategoryProductController@filterCategoriesAvailable')->name('product.categories.available.search');
     Route::get('product/{id}/categories/create', 'CategoryProductController@categoriesAvailable')->name('product.categories.available');
     Route::get('product/{id}/categories', 'CategoryProductController@categories')->name('product.categories');
+    
             
     /**
      * Routes Products
@@ -89,7 +90,16 @@ Route::prefix('admin')->namespace('Admin')->middleware('auth')
      */
     Route::any('users/search', 'UserController@search')->name('users.search');
     Route::resource('users', 'UserController');
-            
+    
+    /**
+     * Routes Permission x Profile
+     */
+    Route::get('profile/{id}/permission/{idPermission}/detach', 'ACL\PermissionProfileController@detachPermissionProfile')->name('profile.permission.detach');
+    Route::post('profile/{id}/permissions', 'ACL\PermissionProfileController@attachPermissionsProfile')->name('profile.permissions.attach');
+    Route::any('profile/{id}/permissions/search', 'ACL\PermissionProfileController@filterPermissionsAvailable')->name('profile.permissions.available.search');
+    Route::get('profile/{id}/permissions/create', 'ACL\PermissionProfileController@permissionsAvailable')->name('profile.permissions.available');
+    Route::get('profile/{id}/permissions', 'ACL\PermissionProfileController@permissions')->name('profile.permissions');
+    
     /**
      * Routes Permissions
      */
